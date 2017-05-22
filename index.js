@@ -1,4 +1,4 @@
-
+//废弃的
 (function(){
     var e = function(config){
         var me = this;

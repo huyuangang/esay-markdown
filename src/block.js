@@ -1,12 +1,15 @@
-
-
-
+/**
+ * @description [解析块级标签]
+ * @create time 2017/5/22 14:36
+ * @author [胡元港]
+ */
 const rules = {
-	'^#+(.+)?': 'h',
-	'^[*+-]{1}(.+)?': 'li',
-	'^[=-]{6,}': 'hr',
-	'^>{1}.+': 'blockquote'
+	'h': /^#+(.+)?/,
+	'hr': /^[=-]{3,}$/,
+	'li': /^[*+]{1}(.+)?/,
+	'blockquote': /^>{1}.+/
 }
+
 
 var	isUl = false,
 	isBlock = false,
@@ -15,17 +18,16 @@ var	isUl = false,
 exports.parse = function(str, nextStr) {
 	let isParse = false;
 	keys.forEach((item) => {
-		let r = new RegExp('('+item+')');
-		if(!r.test(str))
+		if(!rules[item].test(str))
 			return;
 		isParse = true;
-		if(rules[item] === 'h'){
+		if(item === 'h'){
 			str = parseH(str);
 			return;
 		}
-		if(rules[item] === 'li'){
+		if(item === 'li'){
 			if(isUl){
-				if(nextStr && r.test(nextStr)){
+				if(nextStr && rules[item].test(nextStr)){
 					str = parseUl(str, 0);
 				}
 				else{
@@ -34,7 +36,7 @@ exports.parse = function(str, nextStr) {
 				}
 			}
 			else{
-				if(!nextStr||!r.test(nextStr)){
+				if(!nextStr||!rules[item].test(nextStr)){
 					str = parseUl(str, -2);
 				}else{
 					isUl = true;
@@ -43,13 +45,13 @@ exports.parse = function(str, nextStr) {
 			}
 			return;
 		}
-		if(rules[item] === 'hr'){
+		if(item === 'hr'){
 			str = '<hr >';
 			return;
 		}
-		if(rules[item] === 'blockquote' ){
+		if(item === 'blockquote' ){
 			if(isBlock){
-				if(nextStr && r.test(nextStr)){
+				if(nextStr && rules[item].test(nextStr)){
 					str = parseBlock(str, 0);
 				}
 				else{
@@ -58,7 +60,7 @@ exports.parse = function(str, nextStr) {
 				}
 			}
 			else{
-				if(!nextStr || !r.test(nextStr)){
+				if(!nextStr || !rules[item].test(nextStr)){
 					str = parseBlock(str, -2);
 				}else{
 					isBlock = true;

@@ -16,7 +16,7 @@ let parser = (function () {
 		 */
 		parse: function (str) {
 			parseArr = str.split(sub).filter((item)=>{
-				return item!=='';
+				return item.trim()!=='';
 			});
 			for(let i=0,l=parseArr.length; i<l; i++){
 				parseArr[i] = inline.parse(parseArr[i]);
