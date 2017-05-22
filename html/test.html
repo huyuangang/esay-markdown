@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style lang="">
+        .preview{
+            width:80%;
+            height:400px;
+            overflow: auto;
+            border:1px solid;
+        }
+    </style>
+    <script src='./js/index.js'></script>
+</head>
+<body>
+    <textarea name="" id="test" cols="30" rows="10"></textarea>
+    <button onclick='a()'>test</button>
+    <div class='preview'></div>
+</body>
+<script>
+    function a(){
+        var e = new EasyMarkdown();
+        var text = document.querySelector('#test').value;
+        document.querySelector('.preview').innerHTML = e.mark(text);
+    }
+</script>
+</html>

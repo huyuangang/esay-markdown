@@ -1,0 +1,35 @@
+
+# haha
+## ada
+
++ asdfa
+* afd #asdf
+
+-sadf
+
+========
+
+> afda
+> adsf
+
+[baidu](www.baidu.com)
+
+![img](img.src)
+#######adsfasdf
+
++ asdfasd
+
+# asdfd
+
+awserasef
+
+
++ 列表1
++列表2
+
+> asdfa
+
+*倾斜*
+> *倾斜*
+ 
+**加粗**asdf**[link](link.href)![img](img.src)
