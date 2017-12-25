@@ -4,58 +4,96 @@
  * @author [胡元港]
  */
 const rules = {
-	'h': /^#+(.+)?/,
-	'hr': /^[=-]{3,}$/,
-	'li': /^[*+]{1}(.+)?/,
-	'blockquote': /^>{1}.+/
+	'h'          : /^#+(.+)?/,
+	'hr'         : /^[=-]{3,}$/,
+	'li'         : /^[*+]{1}(.+)?/,
+	'blockquote' : /^>{1}.+/,
+	'table'      : /^(\|.+?)+$/
 }
 
 
-var	isUl = false,
-	isBlock = false,
-	keys = Object.keys(rules);
+let			hasUl = false,   //是否已经解析到ul
+hasBlock      = false,	 //是否已经解析到块
+hasTable      = false,   //是否已经解析到表格
+tableHead     = [],      //表格头部
+keys          = Object.keys(rules);  //所有规则
 
+/**
+ * @Author     Huyuangang
+ * @DateTime   2017-12-25
+ * @str    		 {[String]} 当前解析串
+ * @nextStr    {[String]} 下一行解析串
+ * @return     {[String]} 解析结果
+ */
 exports.parse = function(str, nextStr) {
+
+	//是否解析成功
 	let isParse = false;
+
 	keys.forEach((item) => {
+
+		//不符合当前规则直接返回。
 		if(!rules[item].test(str))
 			return;
+
+		//解析成功
 		isParse = true;
+
+		//如果是标题
 		if(item === 'h'){
 			str = parseH(str);
 			return;
 		}
+
+		//如果是列表
 		if(item === 'li'){
-			if(isUl){
+
+			if(hasUl){
+				//如果已经解析到ul
+
 				if(nextStr && rules[item].test(nextStr)){
+					//如果下一行存在且下一行也是列表
+
 					str = parseUl(str, 0);
 				}
 				else{
-					isUl = false;
+					// 下一行不存在或者不是列表
+
+					hasUl = false;
 					str = parseUl(str, -1);
 				}
 			}
 			else{
-				if(!nextStr||!rules[item].test(nextStr)){
+				//如果之前未解析到ul
+
+				if(!nextStr || !rules[item].test(nextStr)){
+					//下一行不存在或者不是列表
+
 					str = parseUl(str, -2);
 				}else{
-					isUl = true;
+					//下一行是列表
+
+					hasUl = true;
 					str = parseUl(str, 1);
 				}
 			}
 			return;
 		}
+
+		//分割线
 		if(item === 'hr'){
 			str = '<hr >';
 			return;
 		}
+
+		//块级
 		if(item === 'blockquote' ){
-			if(isBlock){
+			if(hasBlock){
 				if(nextStr && rules[item].test(nextStr)){
 					str = parseBlock(str, 0);
 				}
 				else{
-					isBlock = false;
+					hasBlock = false;
 					str = parseBlock(str, -1);
 				}
 			}
@@ -63,13 +101,20 @@ exports.parse = function(str, nextStr) {
 				if(!nextStr || !rules[item].test(nextStr)){
 					str = parseBlock(str, -2);
 				}else{
-					isBlock = true;
+					hasBlock = true;
 					str = parseBlock(str, 1);
 				}
 			}
 			return;
 		}
+
+		//表格
+		if(item === 'table') {
+			
+		}
 	})
+
+	//如果没有解析成功，以文本处理
 	if(!isParse){
 		str = `<p>${str}</p>`;
 	}
