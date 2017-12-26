@@ -8,9 +8,9 @@
 > afda
 > adsf
 
-[baidu](www.baidu.com)
+[baidu](https://www.baidu.com)
 
-![img](img.src)
+![img](http://ojwrejtvt.bkt.clouddn.com/17-8-3/19645550.jpg)
 #######adsfasdf
 
 + 列表1
@@ -21,7 +21,7 @@
 > *倾斜2*
 > asfdaf
 
-**加粗**asdf**[link](link.href)![img](img.src)
+**加粗**asdf**[link](https://www.baidu.com)![img](http://ojwrejtvt.bkt.clouddn.com/17-8-3/19645550.jpg)
 
 ***hgfgh
 

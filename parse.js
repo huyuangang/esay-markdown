@@ -22,7 +22,7 @@ let parser = (function () {
 				parseArr[i] = inline.parse(parseArr[i]);
 				parseArr[i] = block.parse(parseArr[i],parseArr[i+1]);
 			}
-			console.log(parseArr);
+			console.log(parseArr.join(''));
 		},
 		setSub (value) {
 			sub = value;
