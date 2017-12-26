@@ -16,6 +16,7 @@ let			hasUl = false,   //是否已经解析到ul
 hasBlock      = false,	 //是否已经解析到块
 hasTable      = false,   //是否已经解析到表格
 tableHead     = [],      //表格头部
+tableBody     = [],			 //表格内容
 keys          = Object.keys(rules);  //所有规则
 
 /**
@@ -88,19 +89,32 @@ exports.parse = function(str, nextStr) {
 
 		//块级
 		if(item === 'blockquote' ){
+
 			if(hasBlock){
+				//块级已经存在
+
 				if(nextStr && rules[item].test(nextStr)){
+					//下一行存在且下一行也是block
+					
 					str = parseBlock(str, 0);
 				}
 				else{
+					//写一行不存在或下一行不存在block
+					
 					hasBlock = false;
 					str = parseBlock(str, -1);
 				}
 			}
 			else{
+				//块级还不存在
+				
 				if(!nextStr || !rules[item].test(nextStr)){
+					//下一行不存在或者下一行不是block
+					
 					str = parseBlock(str, -2);
-				}else{
+				} else {
+					//下一行存在并且下一行是block
+					
 					hasBlock = true;
 					str = parseBlock(str, 1);
 				}
@@ -110,7 +124,8 @@ exports.parse = function(str, nextStr) {
 
 		//表格
 		if(item === 'table') {
-			
+			tableHead = str.split('|').filter(item => item !== "");
+			str = parseTable(str, 0);
 		}
 	})
 
@@ -152,4 +167,22 @@ function parseBlock(str, flag) {
 		return `<p>${str.substr(1).trim()}</p></blockqutoe>`;
 	if(flag === -2)
 		return `<blockqutoe><p>${str.substr(1).trim()}</p></blockqutoe>`;
+}
+
+function parseTable(str, flag) {
+	if(flag === 0) {
+		let stri = '<table><tr>'
+		for(let i = 0, l = tableHead.length; i < l; i++) {
+			stri += `<th>${tableHead[i]}</th>`
+		}
+		return stri;
+	}
+
+	if(flag === 1) {
+
+	}
+
+	if(flag === 2) {
+
+	}
 }
