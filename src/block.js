@@ -8,7 +8,9 @@ const rules = {
 	'hr'         : /^[=-]{3,}$/,
 	'li'         : /^[*+]{1}(.+)?/,
 	'blockquote' : /^>{1}.+/,
-	'table'      : /^(\|.+?)+$/
+	'tableHead'  : /^(\|.+?)+$/,
+	'tableCut'   : /^(\|:?-+:?)+\|$/,
+	'tableBody'  : /^(\|.+?)+$/
 }
 
 
@@ -123,10 +125,44 @@ exports.parse = function(str, nextStr) {
 		}
 
 		//表格
-		if(item === 'table') {
-			tableHead = str.split('|').filter(item => item !== "");
-			str = parseTable(str, 0);
+		if(item === 'tableHead') {
+
+			if(rules['tableCut'].test(nextStr)) {
+
+				tableHead = str.substr(1).split('|');
+				str       = parseTable(str, 0);
+				hasTable  = true;
+				return;
+			} else {
+				isParse = false;
+				return;
+			}
 		}
+
+		//表格分隔
+		if(item === 'tableCut') {
+
+			if(rules['tableBody'].test(nextStr)) {
+
+				str = parseTable(str, 1);
+			} else {
+
+				str = parseTable(str, 2);
+				hasTable = false;
+			}
+			return ;
+		}
+
+		if(item === 'tableBody') {
+			if(rules['tableBody'].test(nextStr)) {
+				str = parseTable(str, 3);
+			} else {
+				str = parseTable(str, 4);
+				hasTable = false;
+			}
+			return ;
+		}
+
 	})
 
 	//如果没有解析成功，以文本处理
@@ -175,14 +211,31 @@ function parseTable(str, flag) {
 		for(let i = 0, l = tableHead.length; i < l; i++) {
 			stri += `<th>${tableHead[i]}</th>`
 		}
+		stri += '</tr>'
 		return stri;
 	}
 
 	if(flag === 1) {
-
+		return '';
 	}
 
 	if(flag === 2) {
+		return '</table>'
+	}
 
+	if(flag === 3 || flag === 4) {
+		let arr = str.substr(1).split('|'),
+		stri    = '<tr>';
+
+		for(let i = 0, l = tableHead.length; i < l ; i++) {
+			if(arr[i]!==undefined) {
+				stri += `<td>${arr[i]}</td>`
+			}
+		}
+		stri += '</tr>';
+		if(flag === 4) {
+			stri += '</table>';
+		}
+		return stri;
 	}
 }
