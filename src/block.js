@@ -10,16 +10,18 @@ const rules = {
 	'blockquote' : /^>{1}.+/,
 	'tableHead'  : /^(\|.+?)+$/,
 	'tableCut'   : /^(\|:?-+:?)+\|$/,
-	'tableBody'  : /^(\|.+?)+$/
+	'tableBody'  : /^(\|.+?)+$/,
+	'codeStart'  : /^`{3}.+?&/,
+	'codeEnd'		 : /^`{3}$/
 }
 
 
-let			hasUl = false,   //是否已经解析到ul
-hasBlock      = false,	 //是否已经解析到块
-hasTable      = false,   //是否已经解析到表格
-tableHead     = [],      //表格头部
-tableBody     = [],			 //表格内容
-keys          = Object.keys(rules);  //所有规则
+let hasUl 				= false,   //是否已经解析到ul
+		hasBlock      = false,	 //是否已经解析到块
+		hasTable      = false,   //是否已经解析到表格
+		tableHead     = [],      //表格头部
+		tableBody     = [],			 //表格内容
+		keys          = Object.keys(rules);  //所有规则
 
 /**
  * @Author     Huyuangang
@@ -162,6 +164,7 @@ exports.parse = function(str, nextStr) {
 			}
 			return ;
 		}
+		
 
 	})
 
