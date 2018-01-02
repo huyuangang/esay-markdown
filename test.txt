@@ -29,4 +29,17 @@
 |:--:|
 |asdf|adf
 
+```js
+  let easymarkdown = new EasyParse();
+    let promise = new Promise(function(resolve, reject) {
+      resolve('2018');
+    });
+    promise.then((d) => {
+      console.log(`hello ${d}`);
+    }).catch((e) => {
+      console.error(e);
+    })
+
+```
+
 

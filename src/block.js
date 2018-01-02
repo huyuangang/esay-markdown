@@ -11,7 +11,7 @@ const rules = {
 	'tableHead'  : /^(\|.+?)+$/,
 	'tableCut'   : /^(\|:?-+:?)+\|$/,
 	'tableBody'  : /^(\|.+?)+$/,
-	'codeStart'  : /^`{3}.+?&/,
+	'codeStart'  : /^`{3}.+?$/,
 	'codeEnd'		 : /^`{3}$/
 }
 
@@ -19,6 +19,8 @@ const rules = {
 let hasUl 				= false,   //是否已经解析到ul
 		hasBlock      = false,	 //是否已经解析到块
 		hasTable      = false,   //是否已经解析到表格
+		hasCode				= false,   //是否已经解析到code
+		codeType 			= 'js',		 //code类型
 		tableHead     = [],      //表格头部
 		tableBody     = [],			 //表格内容
 		keys          = Object.keys(rules);  //所有规则
@@ -34,6 +36,12 @@ exports.parse = function(str, nextStr) {
 
 	//是否解析成功
 	let isParse = false;
+	
+	if (hasCode && !rules['codeEnd'].test(str)) {
+		//如果解析到代码
+		
+		return '\n' + str;
+	}
 
 	keys.forEach((item) => {
 
@@ -155,7 +163,9 @@ exports.parse = function(str, nextStr) {
 			return ;
 		}
 
-		if(item === 'tableBody') {
+		if (item === 'tableBody') {
+			//表格内容
+
 			if(rules['tableBody'].test(nextStr)) {
 				str = parseTable(str, 3);
 			} else {
@@ -164,7 +174,21 @@ exports.parse = function(str, nextStr) {
 			}
 			return ;
 		}
-		
+
+		if (item === 'codeStart') {
+			//代码开始
+			codeType = str.substr(3);
+			str      = '<pre><code>';
+			hasCode  = true;
+			return;
+		}
+
+		if (item === 'codeEnd') {
+			//代码结束
+			hasCode = false;
+			str     = '</code></pre>';
+			return;
+		}
 
 	})
 
