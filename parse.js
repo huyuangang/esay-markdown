@@ -1,14 +1,14 @@
 
-const fs = require('fs');
+// const fs = require('fs');
 
-const block = require('./src/block.js');
-const inline = require('./src/inline.js');
+// const block = require('./src/block.js');
+// const inline = require('./src/inline.js');
 
-let txt = fs.readFileSync('./test.txt', 'utf8');
+// var txt = fs.readFileSync('./test.txt', 'utf8');
 
-let parser = (function () {
-	let sub = '\r\n',
-		parseArr = [];
+var parser = (function () {
+	var sub = '\r\n',
+			parseArr = [];
 	return {
 		/**
 		 * @param  {string} 待解析的字符串
@@ -18,7 +18,7 @@ let parser = (function () {
 			parseArr = str.split(sub).filter((item)=>{
 				return item.trim()!=='';
 			});
-			for(let i=0,l=parseArr.length; i<l; i++){
+			for(var i=0,l=parseArr.length; i<l; i++){
 				parseArr[i] = inline.parse(parseArr[i]);
 				parseArr[i] = block.parse(parseArr[i],parseArr[i+1]);
 			}
@@ -30,4 +30,6 @@ let parser = (function () {
 	}
 }())
 
-parser.parse(txt);
+window.EasyMarkdown = parser
+
+// parser.parse(txt);

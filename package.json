@@ -1,0 +1,24 @@
+{
+  "name": "esay-markdown",
+  "version": "1.0.0",
+  "description": "简单的markdown解析",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/huyuangang/esay-markdown.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/huyuangang/esay-markdown/issues"
+  },
+  "homepage": "https://github.com/huyuangang/esay-markdown#readme"
+}
