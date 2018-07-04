@@ -13,7 +13,7 @@
             border:1px solid;
         }
     </style>
-    <script src='../index.js'></script>
+    <script src='../dist/easymarkdown.js'></script>
 </head>
 <body>
     <textarea name="" id="test" cols="30" rows="10"></textarea>
@@ -22,9 +22,8 @@
 </body>
 <script>
     function a(){
-        var e = new EasyMarkdown();
         var text = document.querySelector('#test').value;
-        document.querySelector('.preview').innerHTML = e.mark(text);
+        document.querySelector('.preview').innerHTML = EasyMarkdown.parse(text);
     }
 </script>
 </html>
