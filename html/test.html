@@ -23,6 +23,7 @@
 <script>
     function a(){
         var text = document.querySelector('#test').value;
+        EasyMarkdown.setSub('\n')
         document.querySelector('.preview').innerHTML = EasyMarkdown.parse(text);
     }
 </script>
